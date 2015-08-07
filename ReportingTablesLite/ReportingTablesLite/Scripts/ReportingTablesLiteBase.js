@@ -1,6 +1,4 @@
-var ReportingTablesLite;
-(function (ReportingTablesLite) {
-    jQuery.noConflict();
+define(["require", "exports", "jquery"], function (require, exports, jQuery) {
     var constants = {
         _string: "[object String]",
         _number: "[object Number]",
@@ -18,7 +16,6 @@ var ReportingTablesLite;
             var self = this;
             self.reportHtmlID = targetHtmlTag;
             self.title = Title;
-            self.columns = [];
             self.indexToIDKey = {};
             self.indexIDPropertyName = indexProperty;
             self.rowTotalCount = 0;
@@ -28,13 +25,12 @@ var ReportingTablesLite;
         Report.prototype.LoadColumns = function (columnSet) {
             for (var colIndex in columnSet) {
                 var currColumn = columnSet[colIndex];
-                this.columnsParam.push(new ColumnMapping(currColumn.name, currColumn.visible, currColumn.displayName));
-                jQuery(this.reportHtmlID + ' thead tr').append("<th class='rtl-" + currColumn.name + "'>" + currColumn.name + "</th>");
+                this.columnsParam.push(currColumn);
+                jQuery(this.reportHtmlID + ' thead tr').append("<th class='rtl-" + currColumn.data + "'>" + currColumn.data + "</th>");
                 if (jQuery(this.reportHtmlID + ' tfoot tr').length > 0) {
-                    jQuery(this.reportHtmlID + ' tfoot tr').append("<th class='rtl-" + currColumn.name + "'>" + currColumn.name + "</th>");
+                    jQuery(this.reportHtmlID + ' tfoot tr').append("<th class='rtl-" + currColumn.data + "'>" + currColumn.data + "</th>");
                 }
             }
-            this.columns = columnSet;
         };
         Report.prototype.LoadData = function (dataSet) {
             var self = this;
@@ -47,18 +43,7 @@ var ReportingTablesLite;
         };
         return Report;
     })();
-    ReportingTablesLite.Report = Report;
-    var Column = (function () {
-        function Column(columnName, order, columnDisplayName, visible, columnType) {
-            this.name = columnName;
-            this.displayName = typeof columnDisplayName != "undefined" ? columnDisplayName : columnName;
-            this.type = typeof columnType != "undefined" ? columnType : 0 /* Undetermined */;
-            this.order = order;
-            this.visible = typeof visible != "undefined" ? visible : true;
-        }
-        return Column;
-    })();
-    ReportingTablesLite.Column = Column;
+    exports.Report = Report;
     var ColumnMapping = (function () {
         function ColumnMapping(value, visible, title) {
             this.data = value;
@@ -68,13 +53,13 @@ var ReportingTablesLite;
         }
         return ColumnMapping;
     })();
-    ReportingTablesLite.ColumnMapping = ColumnMapping;
+    exports.ColumnMapping = ColumnMapping;
     (function (ColumnType) {
         ColumnType[ColumnType["Undetermined"] = 0] = "Undetermined";
         ColumnType[ColumnType["String"] = 1] = "String";
         ColumnType[ColumnType["Number"] = 2] = "Number";
         ColumnType[ColumnType["Date"] = 3] = "Date";
-    })(ReportingTablesLite.ColumnType || (ReportingTablesLite.ColumnType = {}));
-    var ColumnType = ReportingTablesLite.ColumnType;
-})(ReportingTablesLite || (ReportingTablesLite = {}));
-//# sourceMappingURL=ReportingTablesLite.js.map
+    })(exports.ColumnType || (exports.ColumnType = {}));
+    var ColumnType = exports.ColumnType;
+});
+//# sourceMappingURL=ReportingTablesLiteBase.js.map

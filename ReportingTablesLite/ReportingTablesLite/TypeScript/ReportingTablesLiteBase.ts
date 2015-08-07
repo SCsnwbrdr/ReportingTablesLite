@@ -1,6 +1,11 @@
-﻿module ReportingTablesLite {
-    jQuery.noConflict();
+﻿///<reference path="../Scripts/typings/jquery.datatables/jquery.datatables.d.ts" />
 
+import jQuery = require("jquery");
+import DataTables = require("jquery.datatable");
+
+interface JQuery {
+    DataTable(param?: Settings): DataTable;
+}
     var constants = {
         _string: "[object String]",
         _number: "[object Number]",
@@ -18,11 +23,9 @@
 
     export class Report {
         title: string;
-        columns: Column[];
-        dt: DataTables.DataTable;
+        dt: DataTable;
         rowTotalCount: number;
         rowLoadedCount: number;
-        rows: {}[];
         indexToIDKey: {};
         indexIDPropertyName: string;
         reportHtmlID: string;
@@ -32,7 +35,6 @@
             var self = this;
             self.reportHtmlID = targetHtmlTag;
             self.title = Title;
-            self.columns = [];
             self.indexToIDKey = {};
             self.indexIDPropertyName = indexProperty;
             self.rowTotalCount = 0;
@@ -40,18 +42,16 @@
             self.columnsParam = [];
         }
 
-        public LoadColumns(columnSet: Column[]) {
+        public LoadColumns(columnSet: ColumnMapping[]) {
             
                 for (var colIndex in columnSet) {
-                    var currColumn: Column = columnSet[colIndex];
-                    this.columnsParam.push(new ColumnMapping(currColumn.name, currColumn.visible, currColumn.displayName));
-                    jQuery(this.reportHtmlID + ' thead tr').append("<th class='rtl-" + currColumn.name + "'>" + currColumn.name + "</th>");
+                    var currColumn: ColumnMapping = columnSet[colIndex];
+                    this.columnsParam.push(currColumn);
+                    jQuery(this.reportHtmlID + ' thead tr').append("<th class='rtl-" + currColumn.data + "'>" + currColumn.data + "</th>");
                     if (jQuery(this.reportHtmlID + ' tfoot tr').length > 0) {
-                        jQuery(this.reportHtmlID + ' tfoot tr').append("<th class='rtl-" + currColumn.name + "'>" + currColumn.name + "</th>");
+                        jQuery(this.reportHtmlID + ' tfoot tr').append("<th class='rtl-" + currColumn.data + "'>" + currColumn.data + "</th>");
                     }
                 }
-                this.columns = columnSet;
-      
         }
 
         public LoadData(dataSet: any[]) {
@@ -66,23 +66,7 @@
         }
     }
 
-    export class Column {
-        name: string;
-        displayName: string;
-        type: ColumnType;
-        order: number;
-        visible: boolean;
-
-        constructor(columnName: string,  order: number, columnDisplayName?: string, visible?: boolean, columnType?: ColumnType) {
-            this.name = columnName;
-            this.displayName = typeof columnDisplayName != "undefined" ? columnDisplayName: columnName  ;
-            this.type = typeof columnType != "undefined" ? columnType :ColumnType.Undetermined;
-            this.order = order;
-            this.visible = typeof visible != "undefined" ? visible : true;
-        }
-    }
-
-    export class ColumnMapping implements DataTables.ColumnSettings {
+    export class ColumnMapping implements ColumnSettings {
         data: string;
         visible: boolean;
         title: string;
@@ -100,4 +84,3 @@
         Number,
         Date
     }
-}
