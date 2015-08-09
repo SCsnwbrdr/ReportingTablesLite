@@ -8,7 +8,12 @@
 // - Plugin and extension definitions are not typed.
 // - Some return types are not fully wokring
 
+///<amd-module name="jquery.datatables" />
+
 /// <reference path="../jquery/jquery.d.ts"/>
+interface JQuery {
+    DataTable(param?: DataTables.Settings): DataTables.DataTable;
+}
 
 
 //TODO: Wrong, as jquery.d.ts has no interface for fn
@@ -16,8 +21,8 @@
 //    dataTable: DataTables.StaticFunctions;
 //}
 
-
-     interface DataTable extends DataTableCore {
+declare module DataTables {
+    export interface DataTable extends DataTableCore {
         /**
         * Get the data for the whole table.
         */
@@ -124,7 +129,7 @@
         //#endregion "Table/Tables"
     }
 
-     interface DataTables extends DataTableCore {
+    export interface DataTables extends DataTableCore {
         [index: number]: DataTable;
     }
 
@@ -996,7 +1001,7 @@
 
     //#region "Static-Methods"
 
-     interface StaticFunctions {
+    export interface StaticFunctions {
         /**
         * Check is a table node is a DataTable or not
         *
@@ -1009,7 +1014,7 @@
         *
         * @param visible Get only visible tables
         */
-        tables(visible?: boolean): DataTable[];
+        tables(visible?: boolean): DataTables.DataTable[];
 
         /**
         * Version number compatibility check function
@@ -1028,10 +1033,10 @@
         *
         * @param table Selector string for table
         */
-        Api(selector: string | Node | Node[]| JQuery): DataTable;
+        Api(selector: string | Node | Node[]| JQuery): DataTables.DataTable;
     }
 
-     interface StaticUtilFunctions {
+    export interface StaticUtilFunctions {
         /**
         * Escape special characters in a regular expression string. Since: 1.10.4
         *
@@ -1052,7 +1057,7 @@
 
     //#region "Settings"
 
-     interface Settings {
+    export interface Settings {
 
         //#region "Features"
 
@@ -1339,7 +1344,7 @@
 
     //#region "ajax-settings"
 
-     interface AjaxDataRequest {
+    export interface AjaxDataRequest {
         draw: number;
         start: number;
         length: number;
@@ -1349,17 +1354,17 @@
         search: AjaxDataRequestSearch;
     }
 
-     interface AjaxDataRequestSearch {
+    export interface AjaxDataRequestSearch {
         value: string;
         regex: boolean;
     }
 
-     interface AjaxDataRequestOrder {
+    export interface AjaxDataRequestOrder {
         column: number;
         dir: string;
     }
 
-     interface AjaxDataRequestColumn {
+    export interface AjaxDataRequestColumn {
         data: string | number;
         name: string;
         searchable: boolean;
@@ -1367,7 +1372,7 @@
         search: AjaxDataRequestSearch;
     }
 
-     interface AjaxData {
+    export interface AjaxData {
         draw: number;
         recordsTotal: number;
         recordsFiltered: number;
@@ -1399,7 +1404,7 @@
 
     //#region "colunm-settings"
 
-     interface ColumnSettings {
+    export interface ColumnSettings {
         /**
         * Cell type to be created for a column. th/td Since: 1.10
         */
@@ -1516,19 +1521,19 @@
     interface CellMetaSettings {
         row: number;
         col: number;
-        settings: Settings;
+        settings: DataTables.Settings;
     }
 
     //#endregion "colunm-settings"
 
     //#region "other-settings"
 
-     interface RendererSettings {
+    export interface RendererSettings {
         header?: string;
         pageButton?: string;
     }
 
-     interface SearchSettings {
+    export interface SearchSettings {
         /**
         * Control case-sensitive filtering option. Since: 1.10
         */
@@ -1614,7 +1619,7 @@
 
     //#region "language-settings"
 
-	// these are all optional
+    // these are all optional
     interface LanguageSettings {
         emptyTable?: string;
         info?: string;
@@ -1653,7 +1658,7 @@
         [index: string]: Node;
     }
 
-     interface SettingsLegacy {
+    export interface SettingsLegacy {
         ajax: any;
         oApi: any;
         oFeatures: FeaturesLegacy;
@@ -1736,7 +1741,7 @@
         nScrollFoot: Node;
     }
 
-     interface FeaturesLegacy {
+    export interface FeaturesLegacy {
         bAutoWidth: boolean;
         bDeferRender: boolean;
         bFilter: boolean;
@@ -1750,7 +1755,7 @@
         bStateSave: boolean;
     }
 
-     interface ScrollingLegacy {
+    export interface ScrollingLegacy {
         bAutoCss: boolean;
         bCollapse: boolean;
         bInfinite: boolean;
@@ -1760,15 +1765,15 @@
         sY: string;
     }
 
-     interface RowLegacy {
+    export interface RowLegacy {
         nTr: Node;
         _aData: any;
         _aSortData: any[];
         _anHidden: Node[];
         _sRowStripe: string;
     }
-    
-     interface ColumnLegacy {
+
+    export interface ColumnLegacy {
         aDataSort: any;
         asSorting: string[];
         bSearchable: boolean;
@@ -1795,11 +1800,11 @@
         sWidthOrig: string;
     }
 
-     interface CookieCallbackLegacy {
+    export interface CookieCallbackLegacy {
         (name: string, data: any, expires: string, path: string, cookie: string): void;
     }
 
-     interface LanguageLegacy {
+    export interface LanguageLegacy {
         oAria?: LanguageAriaLegacy;
         oPaginate?: LanguagePaginateLegacy;
         sEmptyTable?: string;
@@ -1816,18 +1821,17 @@
         sZeroRecords?: string;
     }
 
-     interface LanguageAriaLegacy {
+    export interface LanguageAriaLegacy {
         sSortAscending?: string;
         sSortDescending?: string;
     }
 
-     interface LanguagePaginateLegacy {
+    export interface LanguagePaginateLegacy {
         sFirst?: string;
         sLast?: string;
         sNext?: string;
         sPrevious?: string;
     }
-    //#endregion "SettingsLegacy
-declare module "jquery.datatable" {
-    export = DataTable;
+    //#endregion "SettingsLegacy"
+
 }

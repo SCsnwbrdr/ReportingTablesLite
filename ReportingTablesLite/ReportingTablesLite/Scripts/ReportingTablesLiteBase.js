@@ -1,4 +1,6 @@
-define(["require", "exports", "jquery"], function (require, exports, jQuery) {
+/// <reference path="../Typescript/globalDeclarations.ts"/>
+/// <amd-dependency path="jquery.datatables" />
+define(["require", "exports", "jquery", "jquery.datatables"], function (require, exports, jQuery) {
     var constants = {
         _string: "[object String]",
         _number: "[object Number]",

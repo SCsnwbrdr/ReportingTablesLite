@@ -3171,7 +3171,5 @@ declare module "jquery" {
     export = $;
 }
 declare var jQuery: JQueryStatic;
-interface JQuery {
-    DataTable(param?: Settings): DataTable;
-}
+
 declare var $: JQueryStatic;

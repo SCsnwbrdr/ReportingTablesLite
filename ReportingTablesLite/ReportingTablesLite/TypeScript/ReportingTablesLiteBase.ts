@@ -1,11 +1,9 @@
-﻿///<reference path="../Scripts/typings/jquery.datatables/jquery.datatables.d.ts" />
+﻿/// <reference path="../Typescript/globalDeclarations.ts"/>
+/// <amd-dependency path="datatables" />
 
 import jQuery = require("jquery");
-import DataTables = require("jquery.datatable");
+import DataTables = require("datatables");
 
-interface JQuery {
-    DataTable(param?: Settings): DataTable;
-}
     var constants = {
         _string: "[object String]",
         _number: "[object Number]",
@@ -23,7 +21,7 @@ interface JQuery {
 
     export class Report {
         title: string;
-        dt: DataTable;
+        dt: DataTables.DataTable;
         rowTotalCount: number;
         rowLoadedCount: number;
         indexToIDKey: {};
@@ -66,7 +64,7 @@ interface JQuery {
         }
     }
 
-    export class ColumnMapping implements ColumnSettings {
+    export class ColumnMapping implements DataTables.ColumnSettings {
         data: string;
         visible: boolean;
         title: string;
